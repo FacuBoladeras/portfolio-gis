@@ -75,6 +75,22 @@ body {
 
 .score { border-color: var(--yellow); color: var(--yellow); }
 
+.lang-switch {
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+  padding: 8px 10px;
+  border: 2px solid var(--cyan);
+  background: #19092a;
+  color: var(--cyan);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.lang-switch:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
 .blink { animation: blink 1s steps(2, end) infinite; }
 
 main {
@@ -237,6 +253,19 @@ p {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.services-grid .arcade-card {
+  align-items: center;
+  text-align: center;
+}
+
+.services-grid .icon {
+  font-size: 36px;
+  width: auto;
+  height: auto;
+  justify-content: center;
+  margin: 0 auto;
+}
+
 .arcade-card,
 .project-card {
   border: 3px solid var(--magenta);
@@ -316,6 +345,9 @@ p {
 }
 
 .project-card {
+  --card-back-solid: #1f3458;
+  --card-back-accent: rgba(116, 200, 255, 0.35);
+  --card-back-label: "COMMON";
   min-height: 170px;
   justify-content: start;
   align-content: start;
@@ -325,8 +357,63 @@ p {
     linear-gradient(180deg, #2b0f4a, #130723);
   background-size: 12px 12px, 12px 12px, auto;
   position: relative;
+  perspective: 900px;
   overflow: hidden;
   gap: 10px;
+}
+
+.project-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.project-card::before {
+  content: var(--card-back-label);
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #f8fbff;
+  border: 3px solid color-mix(in oklab, var(--card-back-solid) 45%, white 55%);
+  background-image:
+    repeating-linear-gradient(45deg, var(--card-back-accent) 0 10px, rgba(0, 0, 0, 0.08) 10px 20px),
+    linear-gradient(180deg, color-mix(in oklab, var(--card-back-solid) 78%, black 22%), var(--card-back-solid));
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.45);
+  transform-origin: center;
+  transform: rotateY(0deg);
+  transition: transform 360ms ease, opacity 280ms ease;
+}
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--card-back-solid) 38%, white 62%);
+  z-index: 5;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35);
+  transition: opacity 280ms ease;
+}
+
+.project-card:hover::before,
+.project-card:focus-within::before,
+.project-card.is-hover::before {
+  transform: rotateY(180deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.project-card:hover::after,
+.project-card:focus-within::after,
+.project-card.is-hover::after {
+  opacity: 0;
 }
 
 .project-card h3 {
@@ -484,11 +571,24 @@ p {
 
 .rarity-common { border-color: #74c8ff; }
 .rarity-common .rarity { border-color: #74c8ff; color: #a9ddff; }
+.rarity-common {
+  --card-back-solid: #1f4d78;
+  --card-back-accent: rgba(116, 200, 255, 0.4);
+  --card-back-label: "COMMON";
+}
 
 .rarity-rare { border-color: #63ff9e; }
 .rarity-rare .rarity { border-color: #63ff9e; color: #b6ffd0; }
+.rarity-rare {
+  --card-back-solid: #1f6b4a;
+  --card-back-accent: rgba(99, 255, 158, 0.4);
+  --card-back-label: "RARE";
+}
 
 .rarity-epic {
+  --card-back-solid: #7a4f12;
+  --card-back-accent: rgba(255, 213, 75, 0.45);
+  --card-back-label: "EPIC";
   border-color: #ffd54b;
   box-shadow: var(--pixel-shadow), 0 0 22px rgba(255, 213, 75, 0.35);
 }

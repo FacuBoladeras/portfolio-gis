@@ -1,6 +1,145 @@
 const hudScore = document.querySelector('.score');
 const coordsHud = document.querySelector('.coords');
 const radarHud = document.querySelector('.scan-hud');
+const langSwitch = document.querySelector('#lang-switch');
+
+const translations = {
+  es: {
+    heroLabel: 'STAGE 01 - PANTALLA INICIAL',
+    heroTitle: 'GIS, Teledeteccion y Datos Espaciales',
+    heroSubtitle: 'Transformo datos geograficos en mapas, analisis y soluciones visuales.',
+    powerupsAria: 'Especialidades clave',
+    powerup1: 'PYTHON CORE',
+    powerup2: 'CIENCIA DE DATOS',
+    powerup3: 'GEE CLOUD',
+    viewProjects: 'Ver proyectos',
+    contactBtn: 'Contactar',
+    servicesTitle: 'Servicios',
+    service1: 'Mapas tematicos',
+    service2: 'Teledeteccion',
+    service3: 'Big Data Espacial',
+    service4: 'Automatizacion GIS con Python',
+    aboutTitle: 'Perfil',
+    avatarAlt: 'Foto de perfil de Facundo Boladeras',
+    aboutP1: 'Hola, soy biologo egresado de la Universidad Autonoma de Entre Rios y actualmente becario doctoral CONICET.',
+    aboutP2: 'Me especializo en GIS con fuerte experiencia en Python y Google Earth Engine, combinando ciencia de datos y geoprocesamiento para convertir datos espaciales en decisiones para investigacion y gestion territorial.',
+    profileTagsAria: 'Especialidades',
+    projectsTitle: 'Proyectos',
+    project1Title: 'Deep Learning con Imagenes',
+    project1Desc: 'Estimacion de altura de dosel con flujos de teledeteccion asistidos por IA.',
+    project2Title: 'Estimacion de Biomasa',
+    project2Desc: 'Modelado espacial de biomasa integrando pipelines en Python e indicadores ecologicos.',
+    project3Title: 'Automatizacion con Python',
+    project3Desc: 'Automatizacion GIS low-code y por scripting para acelerar procesos repetitivos.',
+    project4Title: 'Servicios GIS Freelance',
+    project4Desc: 'Entrega de proyectos con Rasterio, GeoPandas y herramientas geoespaciales de nubes de puntos.',
+    viewProject: 'Ver proyecto',
+    stackTitle: 'Tecnologias',
+    contactLabel: 'FINAL BOSS - CONTACTO',
+    contactTitle: 'Listo para mapear tus datos?',
+    contactDesc: 'Construyamos productos GIS con estetica, claridad y precision para investigacion, gestion y toma de decisiones.',
+    contactStart: 'Iniciar contacto',
+    footerCopy: '© 2026 GIS Arcade Portfolio',
+    switchLabel: 'Cambiar idioma a ingles',
+    switchText: 'EN',
+    radarMessages: ['MAPA RADAR ACTIVO', 'SATELITE BLOQUEADO', 'SINCRONIZACION DE CAPAS OK']
+  },
+  en: {
+    heroLabel: 'STAGE 01 - START SCREEN',
+    heroTitle: 'GIS, Remote Sensing and Spatial Data',
+    heroSubtitle: 'I transform geographic data into maps, analysis and visual solutions.',
+    powerupsAria: 'Key specialties',
+    powerup1: 'PYTHON CORE',
+    powerup2: 'DATA SCIENCE',
+    powerup3: 'GEE CLOUD',
+    viewProjects: 'View projects',
+    contactBtn: 'Contact',
+    servicesTitle: 'Services',
+    service1: 'Thematic Maps',
+    service2: 'Remote Sensing',
+    service3: 'Spatial Big Data',
+    service4: 'GIS Automation with Python',
+    aboutTitle: 'Profile',
+    avatarAlt: 'Profile photo of Facundo Boladeras',
+    aboutP1: 'Hello, I am a Biology graduate from Universidad Autonoma de Entre Rios and currently a PhD candidate with a CONICET scholarship.',
+    aboutP2: 'I specialize in GIS with strong experience in Python and Google Earth Engine, combining data science and geoprocessing to transform spatial data into decisions for research and territorial management.',
+    profileTagsAria: 'Specialties',
+    projectsTitle: 'Projects',
+    project1Title: 'Deep Learning with Images',
+    project1Desc: 'Canopy height estimation using AI-assisted remote sensing workflows.',
+    project2Title: 'Biomass Estimate',
+    project2Desc: 'Spatial biomass modeling integrating Python pipelines and eco indicators.',
+    project3Title: 'Automation with Python',
+    project3Desc: 'Low-code and scripted GIS automation to speed up repetitive processes.',
+    project4Title: 'Freelance GIS Services',
+    project4Desc: 'Project delivery with Rasterio, GeoPandas and point-cloud geospatial tools.',
+    viewProject: 'View project',
+    stackTitle: 'Tech Stack',
+    contactLabel: 'FINAL BOSS - CONTACT',
+    contactTitle: 'Ready to map your data?',
+    contactDesc: 'Let us build GIS products with aesthetics, clarity and precision for research, management and decision-making.',
+    contactStart: 'Start contact',
+    footerCopy: '© 2026 GIS Arcade Portfolio',
+    switchLabel: 'Switch language to Spanish',
+    switchText: 'ES',
+    radarMessages: ['RADAR MAP ACTIVE', 'SATELLITE LOCKED', 'LAYER SYNC OK']
+  }
+};
+
+let currentLanguage = localStorage.getItem('portfolio-language') || 'es';
+let radarMessages = translations[currentLanguage].radarMessages;
+let msgIndex = 0;
+
+const applyLanguage = (language) => {
+  const selectedLanguage = translations[language] ? language : 'es';
+  const dictionary = translations[selectedLanguage];
+
+  document.documentElement.lang = selectedLanguage;
+
+  document.querySelectorAll('[data-i18n]').forEach((element) => {
+    const key = element.dataset.i18n;
+    if (key && dictionary[key]) {
+      element.textContent = dictionary[key];
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-aria-label]').forEach((element) => {
+    const key = element.dataset.i18nAriaLabel;
+    if (key && dictionary[key]) {
+      element.setAttribute('aria-label', dictionary[key]);
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-alt]').forEach((element) => {
+    const key = element.dataset.i18nAlt;
+    if (key && dictionary[key]) {
+      element.setAttribute('alt', dictionary[key]);
+    }
+  });
+
+  if (langSwitch) {
+    langSwitch.textContent = dictionary.switchText;
+    langSwitch.setAttribute('aria-label', dictionary.switchLabel);
+  }
+
+  radarMessages = dictionary.radarMessages;
+  msgIndex = 0;
+  if (radarHud) {
+    radarHud.textContent = radarMessages[msgIndex];
+  }
+
+  currentLanguage = selectedLanguage;
+  localStorage.setItem('portfolio-language', selectedLanguage);
+};
+
+if (langSwitch) {
+  langSwitch.addEventListener('click', () => {
+    const nextLanguage = currentLanguage === 'es' ? 'en' : 'es';
+    applyLanguage(nextLanguage);
+  });
+}
+
+applyLanguage(currentLanguage);
 
 if (hudScore) {
   let points = 9874;
@@ -20,8 +159,6 @@ if (coordsHud) {
 }
 
 if (radarHud) {
-  const radarMessages = ['RADAR MAP ACTIVE', 'SATELLITE LOCKED', 'LAYER SYNC OK'];
-  let msgIndex = 0;
   setInterval(() => {
     msgIndex = (msgIndex + 1) % radarMessages.length;
     radarHud.textContent = radarMessages[msgIndex];
