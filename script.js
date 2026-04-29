@@ -178,6 +178,29 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 const revealTargets = document.querySelectorAll('.hero, .section, .final-cta, .footer, .arcade-card, .project-card');
 revealTargets.forEach((element) => element.classList.add('reveal'));
 
+const projectCards = document.querySelectorAll('.project-card');
+const unlockedCardsKey = 'portfolio-unlocked-project-cards';
+const unlockedCards = new Set(JSON.parse(localStorage.getItem(unlockedCardsKey) || '[]'));
+
+projectCards.forEach((card, index) => {
+  card.dataset.cardIndex = String(index);
+  if (unlockedCards.has(index)) {
+    card.classList.add('is-revealed');
+  }
+});
+
+const unlockCard = (card) => {
+  if (!card.classList.contains('project-card')) return;
+  const cardIndex = Number(card.dataset.cardIndex);
+  if (Number.isNaN(cardIndex)) return;
+
+  card.classList.add('is-revealed');
+  if (!unlockedCards.has(cardIndex)) {
+    unlockedCards.add(cardIndex);
+    localStorage.setItem(unlockedCardsKey, JSON.stringify([...unlockedCards]));
+  }
+};
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -193,6 +216,11 @@ const revealObserver = new IntersectionObserver(
 revealTargets.forEach((element) => revealObserver.observe(element));
 
 document.querySelectorAll('.arcade-card, .project-card').forEach((card) => {
-  card.addEventListener('mouseenter', () => card.classList.add('is-hover'));
+  card.addEventListener('mouseenter', () => {
+    card.classList.add('is-hover');
+    unlockCard(card);
+  });
   card.addEventListener('mouseleave', () => card.classList.remove('is-hover'));
+  card.addEventListener('focusin', () => unlockCard(card));
+  card.addEventListener('touchstart', () => unlockCard(card), { passive: true });
 });

@@ -404,6 +404,7 @@ p {
 
 .project-card:hover::before,
 .project-card:focus-within::before,
+.project-card.is-revealed::before,
 .project-card.is-hover::before {
   transform: rotateY(180deg);
   opacity: 0;
@@ -412,6 +413,7 @@ p {
 
 .project-card:hover::after,
 .project-card:focus-within::after,
+.project-card.is-revealed::after,
 .project-card.is-hover::after {
   opacity: 0;
 }
