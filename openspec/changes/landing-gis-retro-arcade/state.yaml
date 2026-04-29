@@ -1,0 +1,12 @@
+change: landing-gis-retro-arcade
+status: tasks_defined
+artifact_store: openspec
+artifacts:
+  proposal: openspec/changes/landing-gis-retro-arcade/proposal.md
+  spec: openspec/changes/landing-gis-retro-arcade/spec.md
+  design: openspec/changes/landing-gis-retro-arcade/design.md
+  tasks: openspec/changes/landing-gis-retro-arcade/tasks.md
+updated_at: 2026-04-29
+notes:
+  - Implementación base ya creada en index.html, styles.css y script.js.
+  - Pendiente personalizar links reales y assets pixel-art propios.
