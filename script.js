@@ -1,6 +1,7 @@
 const hudScore = document.querySelector('.score');
 const coordsHud = document.querySelector('.coords');
 const radarHud = document.querySelector('.scan-hud');
+const langSwitch = document.querySelector('#lang-switch');
 const resetCardsButton = document.querySelector('#reset-cards');
 
 const translations = {
@@ -40,6 +41,8 @@ const translations = {
     contactDesc: 'Construyamos productos GIS con estetica, claridad y precision para investigacion, gestion y toma de decisiones.',
     contactStart: 'Iniciar contacto',
     footerCopy: '© 2026 GIS Arcade Portfolio',
+    switchLabel: 'Cambiar idioma a ingles',
+    switchText: 'EN',
     radarMessages: ['MAPA RADAR ACTIVO', 'SATELITE BLOQUEADO', 'SINCRONIZACION DE CAPAS OK']
   },
   en: {
@@ -78,6 +81,8 @@ const translations = {
     contactDesc: 'Let us build GIS products with aesthetics, clarity and precision for research, management and decision-making.',
     contactStart: 'Start contact',
     footerCopy: '© 2026 GIS Arcade Portfolio',
+    switchLabel: 'Switch language to Spanish',
+    switchText: 'ES',
     radarMessages: ['RADAR MAP ACTIVE', 'SATELLITE LOCKED', 'LAYER SYNC OK']
   }
 };
@@ -113,6 +118,11 @@ const applyLanguage = (language) => {
     }
   });
 
+  if (langSwitch) {
+    langSwitch.textContent = dictionary.switchText;
+    langSwitch.setAttribute('aria-label', dictionary.switchLabel);
+  }
+
   radarMessages = dictionary.radarMessages;
   msgIndex = 0;
   if (radarHud) {
@@ -124,6 +134,13 @@ const applyLanguage = (language) => {
 };
 
 applyLanguage(currentLanguage);
+
+if (langSwitch) {
+  langSwitch.addEventListener('click', () => {
+    const nextLanguage = currentLanguage === 'es' ? 'en' : 'es';
+    applyLanguage(nextLanguage);
+  });
+}
 
 if (hudScore) {
   let points = 9874;
