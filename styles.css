@@ -244,6 +244,35 @@ p {
   text-shadow: 2px 2px 0 #000;
 }
 
+.projects-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.projects-header .section-title {
+  margin-bottom: 0;
+}
+
+.reset-cards-btn {
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+  padding: 9px 10px;
+  border: 2px solid #ff7f9f;
+  background: linear-gradient(180deg, #5f1833, #3f0f22);
+  color: #ffd8e5;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.reset-cards-btn:hover {
+  border-color: var(--yellow);
+  color: #fff3b8;
+}
+
 .card-grid {
   display: grid;
   gap: 14px;

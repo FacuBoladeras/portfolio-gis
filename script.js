@@ -1,7 +1,7 @@
 const hudScore = document.querySelector('.score');
 const coordsHud = document.querySelector('.coords');
 const radarHud = document.querySelector('.scan-hud');
-const langSwitch = document.querySelector('#lang-switch');
+const resetCardsButton = document.querySelector('#reset-cards');
 
 const translations = {
   es: {
@@ -26,7 +26,7 @@ const translations = {
     profileTagsAria: 'Especialidades',
     projectsTitle: 'Proyectos',
     project1Title: 'Deep Learning con Imagenes',
-    project1Desc: 'Estimacion de altura de dosel con flujos de teledeteccion asistidos por IA.',
+    project1Desc: 'Estimacion de bosques implantados mediante tecnicas de Deep-learning.',
     project2Title: 'Estimacion de Biomasa',
     project2Desc: 'Modelado espacial de biomasa integrando pipelines en Python e indicadores ecologicos.',
     project3Title: 'Automatizacion con Python',
@@ -40,8 +40,6 @@ const translations = {
     contactDesc: 'Construyamos productos GIS con estetica, claridad y precision para investigacion, gestion y toma de decisiones.',
     contactStart: 'Iniciar contacto',
     footerCopy: '© 2026 GIS Arcade Portfolio',
-    switchLabel: 'Cambiar idioma a ingles',
-    switchText: 'EN',
     radarMessages: ['MAPA RADAR ACTIVO', 'SATELITE BLOQUEADO', 'SINCRONIZACION DE CAPAS OK']
   },
   en: {
@@ -66,7 +64,7 @@ const translations = {
     profileTagsAria: 'Specialties',
     projectsTitle: 'Projects',
     project1Title: 'Deep Learning with Images',
-    project1Desc: 'Canopy height estimation using AI-assisted remote sensing workflows.',
+    project1Desc: 'Estimation of planted forests using deep-learning techniques.',
     project2Title: 'Biomass Estimate',
     project2Desc: 'Spatial biomass modeling integrating Python pipelines and eco indicators.',
     project3Title: 'Automation with Python',
@@ -80,8 +78,6 @@ const translations = {
     contactDesc: 'Let us build GIS products with aesthetics, clarity and precision for research, management and decision-making.',
     contactStart: 'Start contact',
     footerCopy: '© 2026 GIS Arcade Portfolio',
-    switchLabel: 'Switch language to Spanish',
-    switchText: 'ES',
     radarMessages: ['RADAR MAP ACTIVE', 'SATELLITE LOCKED', 'LAYER SYNC OK']
   }
 };
@@ -117,11 +113,6 @@ const applyLanguage = (language) => {
     }
   });
 
-  if (langSwitch) {
-    langSwitch.textContent = dictionary.switchText;
-    langSwitch.setAttribute('aria-label', dictionary.switchLabel);
-  }
-
   radarMessages = dictionary.radarMessages;
   msgIndex = 0;
   if (radarHud) {
@@ -131,13 +122,6 @@ const applyLanguage = (language) => {
   currentLanguage = selectedLanguage;
   localStorage.setItem('portfolio-language', selectedLanguage);
 };
-
-if (langSwitch) {
-  langSwitch.addEventListener('click', () => {
-    const nextLanguage = currentLanguage === 'es' ? 'en' : 'es';
-    applyLanguage(nextLanguage);
-  });
-}
 
 applyLanguage(currentLanguage);
 
@@ -200,6 +184,14 @@ const unlockCard = (card) => {
     localStorage.setItem(unlockedCardsKey, JSON.stringify([...unlockedCards]));
   }
 };
+
+if (resetCardsButton) {
+  resetCardsButton.addEventListener('click', () => {
+    unlockedCards.clear();
+    localStorage.removeItem(unlockedCardsKey);
+    projectCards.forEach((card) => card.classList.remove('is-revealed'));
+  });
+}
 
 const revealObserver = new IntersectionObserver(
   (entries) => {
